@@ -1,0 +1,57 @@
+services:
+  backend:
+    build: backend
+    restart: always
+    environment:
+      - MYSQL_HOST=db
+      - MYSQL_PORT=3306
+      - DATABASE_NAME=online_cinema
+      - MYSQL_USERNAME=root
+      - MYSQL_PASSWORD=testpass
+    networks:
+      - react-spring
+      - spring-mysql
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+    - 8080:8080  
+  db:
+    image: mysql:latest
+    container_name: db
+    environment:
+      - MYSQL_DATABASE=online_cinema
+      - MYSQL_ROOT_PASSWORD=testpass
+    restart: always
+    healthcheck:
+      test: mysqladmin ping -h localhost --user root --password=testpass
+      interval: 3s
+      retries: 5
+      start_period: 30s
+    expose:
+      - 3306
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+     - spring-mysql
+  frontend:
+    build:
+      context: frontend
+      target: development
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend/src:/code/src
+      - /project/node_modules
+    networks:
+      - react-spring
+    depends_on:
+      - backend
+    expose:
+      - 3306
+      - 33060
+volumes:
+  db-data: {}
+networks:
+  react-spring: {}
+  spring-mysql: {}
