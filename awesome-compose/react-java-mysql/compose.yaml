@@ -34,6 +34,8 @@ services:
       - db-data:/var/lib/mysql
     networks:
      - spring-mysql
+    ports:
+     - 3306:3306
   frontend:
     build:
       context: frontend

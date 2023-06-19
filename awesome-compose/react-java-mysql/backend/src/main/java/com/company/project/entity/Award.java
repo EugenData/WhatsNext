@@ -1,5 +1,6 @@
 package com.company.project.entity;
 
+import java.sql.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -10,9 +11,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
@@ -25,27 +28,21 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "users")
-public class User {
+@Table(name = "award")
+public class Award {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false, unique = true)
-    private String userName;
+    private Long award_id;
 
     @Column(nullable = false)
-    private String password;
+    private String award_name;
 
     @Column(nullable = false)
-    private String email;
+    private Date dateAwarded;
 
-    @OneToMany(mappedBy = "user")
-    @JsonManagedReference
-    private List<Watchlist> watchlists;
-
-    @OneToMany(mappedBy = "user")
-    @JsonManagedReference
-    private List<Review> reviews;
+    @ManyToOne
+    @JoinColumn(name = "movie_id")
+    @JsonBackReference
+    private Movie movie;
 }

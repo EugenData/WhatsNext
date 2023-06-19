@@ -1,5 +1,6 @@
 package com.company.project.entity;
 
+import java.sql.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -25,27 +26,23 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "users")
-public class User {
+@Table(name = "actor")
+public class Actor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false, unique = true)
-    private String userName;
+    private Long actor_id;
 
     @Column(nullable = false)
-    private String password;
+    private String actor_fullName;
 
     @Column(nullable = false)
-    private String email;
+    private Date bithday;
 
-    @OneToMany(mappedBy = "user")
-    @JsonManagedReference
-    private List<Watchlist> watchlists;
+    @Column(nullable = false)
+    private String country;
 
-    @OneToMany(mappedBy = "user")
+    @ManyToMany(mappedBy = "actors")
     @JsonManagedReference
-    private List<Review> reviews;
+    private List<Movie> movies;
 }

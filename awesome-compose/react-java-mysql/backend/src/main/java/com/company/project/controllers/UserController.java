@@ -40,21 +40,4 @@ public class UserController {
         List<User> users = userService.getAllUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
-
-    // Build Update User REST API
-    @PutMapping("{id}")
-    // http://localhost:8080/api/users/1
-    public ResponseEntity<User> updateUser(@PathVariable("id") Long userId,
-                                           @RequestBody User user){
-        user.setId(userId);
-        User updatedUser = userService.updateUser(user);
-        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
-    }
-
-    // Build Delete User REST API
-    @DeleteMapping("{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable("id") Long userId){
-        userService.deleteUser(userId);
-        return new ResponseEntity<>("User successfully deleted!", HttpStatus.OK);
-    }
 }
