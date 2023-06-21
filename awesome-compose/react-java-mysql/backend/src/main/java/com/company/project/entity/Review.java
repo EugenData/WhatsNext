@@ -40,6 +40,6 @@ public class Review {
 
     @ManyToOne
     @JoinColumn(name = "movie_id")
-    @JsonManagedReference
+    @JsonBackReference
     private Movie movie;
 }

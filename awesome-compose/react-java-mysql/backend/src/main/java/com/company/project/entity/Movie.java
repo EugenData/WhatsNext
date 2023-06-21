@@ -1,6 +1,7 @@
 package com.company.project.entity;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -12,23 +13,33 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @Entity
 @Table(name = "movie")
+// @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+// property = "movie_id")
 public class Movie {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long movie_id;
+  private Long movieId;
 
   @Column(nullable = false)
   private String title;
@@ -37,7 +48,7 @@ public class Movie {
   private String genre;
 
   @Column(nullable = false)
-  private Date releaseDate;
+  private int releaseDate;
 
   @ManyToMany(mappedBy = "movies")
   @JsonBackReference
@@ -47,21 +58,18 @@ public class Movie {
   @JsonManagedReference
   private List<Review> reviews;
 
-  // Marvel Cinematic Universe (MCU): The MCU is a vast movie franchise with
-  // interconnected stories.
-  // For instance, the movie "Iron Man" has sequels like "Iron Man 2" and "Iron
-  // Man 3."
-  // However, these sequels are not limited to just the "Iron Man" series.
-  // Other movies like "The Avengers" and "Captain America: Civil War" also serve
-  // as sequels to "Iron Man" and have their own sequels.
-  // This creates a complex many-to-many relationship among the movies within the
-  // MCU.
-
-  @ManyToMany(cascade = { CascadeType.ALL })
-  @JoinTable(name = "movie_sequels", joinColumns = @JoinColumn(name = "movie_id"), inverseJoinColumns = @JoinColumn(name = "sequel_id"))
-  @JsonManagedReference
+  @ManyToOne
+  @JoinColumn(name = "parent_movie_id")
   @JsonBackReference
+  private Movie parentMovie;
+
+  @OneToMany(mappedBy = "parentMovie")
+  @JsonManagedReference
   private List<Movie> sequels;
+
+  {
+    sequels = new ArrayList<>();
+  }
 
   @OneToMany(mappedBy = "movie")
   @JsonManagedReference
@@ -69,7 +77,10 @@ public class Movie {
 
   @ManyToMany
   @JoinTable(name = "movie_actors", joinColumns = @JoinColumn(name = "movie_id"), inverseJoinColumns = @JoinColumn(name = "actor_id"))
-  @JsonBackReference
+  @JsonManagedReference
   private List<Actor> actors;
+  {
+    actors = new ArrayList<>();
+  }
 
 }

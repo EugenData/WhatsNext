@@ -1,6 +1,7 @@
 package com.company.project.entity;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -15,16 +16,24 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
 @Table(name = "watchlist")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "watchlist_id")
 public class Watchlist {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long watchlist_id;
@@ -44,4 +53,8 @@ public class Watchlist {
     @JoinTable(name = "watchlist_movie", joinColumns = @JoinColumn(name = "watchlist_id"), inverseJoinColumns = @JoinColumn(name = "movie_id"))
     @JsonManagedReference
     private List<Movie> movies;
+    {
+        movies = new ArrayList<>();
+    }
+
 }

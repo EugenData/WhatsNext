@@ -1,5 +1,6 @@
 package com.company.project.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -22,12 +23,13 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
 public class User {
-
+    public User (){
+    this.watchlists = new ArrayList<Watchlist>();
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -44,6 +46,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     @JsonManagedReference
     private List<Watchlist> watchlists;
+
 
     @OneToMany(mappedBy = "user")
     @JsonManagedReference

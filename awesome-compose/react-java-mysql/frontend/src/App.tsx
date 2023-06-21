@@ -1,40 +1,22 @@
 import React, { useEffect, useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
+//theme
+import "primereact/resources/themes/lara-light-indigo/theme.css";
 
-type Greeting = {
-  id: number;
-  name: string;
-};
+//core
+import "primereact/resources/primereact.min.css";
+import UsersPicker from "./Components/UsersPicker";
+import AllMovies from "./Components/AllMovies";
+import CustomToolBar from "./Components/CustomToolBar";
+import MainBlock from "./Components/MainBlock";
 
 function App() {
-  const [greeting, setGreeting] = useState<Greeting>();
-  useEffect(() => {
-    fetch("/api")
-      .then(res => res.json())
-      .then(setGreeting)
-      .catch(console.error);
-  }, [setGreeting]);
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        {greeting ? (
-          <p>Hello from {greeting.name}</p>
-        ) : (
-          <p>Loading...</p>
-        )}
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <CustomToolBar />
+        <MainBlock />
       </header>
     </div>
   );
