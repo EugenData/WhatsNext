@@ -5,16 +5,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Setter
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReviewDTO {
-    private String reviewText;
-    
-    private Long userId;
+public class MovieDTO {
 
-    private Long movieId;
+  private Long movieId;
+  private String title;
+  private String genre;
+  private int releaseDate;
 
-    private Boolean typeOfReview;
+  
+
 }

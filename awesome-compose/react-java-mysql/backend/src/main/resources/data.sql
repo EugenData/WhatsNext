@@ -1,1 +1,0 @@
--- INSERT INTO example.test(name) values ('Docker M2 !  ');

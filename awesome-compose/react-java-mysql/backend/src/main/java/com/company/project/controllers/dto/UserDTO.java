@@ -1,3 +1,4 @@
+
 package com.company.project.controllers.dto;
 
 import lombok.AllArgsConstructor;
@@ -5,16 +6,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Setter
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReviewDTO {
-    private String reviewText;
-    
-    private Long userId;
+public class UserDTO {
 
-    private Long movieId;
+    private Long id;
+    private String userName;
 
-    private Boolean typeOfReview;
 }

@@ -33,6 +33,9 @@ public class Review {
     @Column(nullable = false)
     private Date dateCreated;
 
+    @Column()
+    private Boolean typeOfReview;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonBackReference

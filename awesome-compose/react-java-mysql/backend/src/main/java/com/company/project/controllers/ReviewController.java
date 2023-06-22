@@ -42,23 +42,21 @@ public class ReviewController {
 
     @PostMapping(path = "/create", produces = "application/json")
     public ResponseEntity<String> createReview(@RequestBody ReviewDTO reviewDTO) {
-        // Retrieve the user and movie based on the provided IDs
+
         User user = userRepository.findById(reviewDTO.getUserId()).orElse(null);
         Movie movie = movieRepository.findById(reviewDTO.getMovieId()).orElse(null);
 
-        // Check if the user and movie exist
         if (user == null || movie == null || reviewDTO.getReviewText() == null) {
             return ResponseEntity.badRequest().body("Invalid user or movie ID");
         }
 
-        // Create a new Review object
         Review review = new Review();
         review.setReviewText(reviewDTO.getReviewText());
+        review.setTypeOfReview(reviewDTO.getTypeOfReview());
         review.setDateCreated(new Date(2000, 11, 10));
         review.setUser(user);
         review.setMovie(movie);
 
-        // Save the review to the database
         reviewRepository.save(review);
 
         return ResponseEntity.ok("Review created successfully");

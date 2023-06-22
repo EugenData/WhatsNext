@@ -23,10 +23,12 @@ import com.company.project.repository.UserRepository;
 import com.company.project.repository.WatchlistRepository;
 import com.github.javafaker.Faker;
 
-import lombok.NoArgsConstructor;
-
 @Service
 public class PopulateDatabase {
+
+    private final int user_amount = 15;
+    private final int movies_amount = 15;
+    private final int actor_amount = 10;
 
     private Faker faker;
     private final UserRepository userRepository;
@@ -61,7 +63,6 @@ public class PopulateDatabase {
     }
 
     private void generateUsers() {
-        var user_amount = 3;
 
         var domains = new String[] {
                 "gmail.com",
@@ -69,23 +70,24 @@ public class PopulateDatabase {
                 "icloud.com"
         };
 
-        var users = new User[user_amount];
+        List<User> users = new ArrayList<>();
 
         for (int i = 0; i < user_amount; i++) {
-            var n = Faker.instance().name();
-            var userName = n.firstName();
-            var password = Faker.instance().random().toString();
+            User user = new User();
+            var userName = faker.name().firstName();
+            var password = faker.random().toString();
             var email = userName + "@" + domains[i % domains.length];
-            var id = Faker.instance().random().nextLong();
 
-            users[i] = new User(id, userName, password, email, null, null);
-
+            user.setEmail(email);
+            user.setPassword(password);
+            user.setUserName(userName);
+            users.add(user);
         }
-        userRepository.saveAll(List.of(users));
+        userRepository.saveAll(users);
     }
 
     private void generateMovies() {
-        var movies_amount = 10;
+
         List<Movie> movies = new ArrayList<>();
 
         for (int i = 0; i < movies_amount; i++) {
@@ -106,7 +108,7 @@ public class PopulateDatabase {
         List<User> users = userRepository.findAll();
 
         for (User user : users) {
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < faker.random().nextInt(1, 5); i++) {
 
                 Watchlist watchlist = new Watchlist();
                 watchlist.setPriority(faker.random().nextInt(1, 11));
@@ -151,13 +153,15 @@ public class PopulateDatabase {
         List<Review> reviews = new ArrayList<>();
 
         List<User> users = userRepository.findAll();
-        List<Movie> movies = new ArrayList<>(movieRepository.findAll());
 
         for (User user : users) {
-            for (int i = 0; i < faker.random().nextInt(1, 5); i++) {
-                int randomIndex = faker.random().nextInt(movies.size());
+            List<Movie> movies = new ArrayList<>(movieRepository.findAll());
+
+            for (int i = 0; i < faker.random().nextInt(10, 14); i++) {
+                int randomIndex = faker.random().nextInt(0, movies.size() - 1);
                 Movie movie = movies.get(randomIndex);
                 Review review = new Review();
+                review.setTypeOfReview(faker.random().nextBoolean());
                 review.setUser(user);
                 review.setMovie(movie);
                 review.setDateCreated(new Date(faker.random().nextInt(1, 11)));
@@ -222,7 +226,7 @@ public class PopulateDatabase {
         for (Movie movie : movies) {
             Award award = new Award();
             award.setAward_name(faker.elderScrolls().city());
-            award.setDateAwarded(new Date(faker.random().nextInt(1, 11)));
+            award.setDateAwarded(new Date(faker.random().nextInt(4, 11)));
             award.setMovie(movie);
             awards.add(award);
         }
@@ -231,7 +235,7 @@ public class PopulateDatabase {
     }
 
     private void generateActors() {
-        var actor_amount = 10;
+
         List<Actor> actors = new ArrayList<>();
 
         for (int i = 0; i < actor_amount; i++) {
