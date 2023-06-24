@@ -16,9 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,7 +29,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "watchlist")
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "watchlist_id")
+
 public class Watchlist {
 
     @Id

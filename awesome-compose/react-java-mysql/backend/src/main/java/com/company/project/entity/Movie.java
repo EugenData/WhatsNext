@@ -33,8 +33,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "movie")
-// @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
-// property = "movie_id")
+
 public class Movie {
 
   @Id

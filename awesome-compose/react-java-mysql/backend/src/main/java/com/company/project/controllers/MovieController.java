@@ -10,9 +10,7 @@ import com.company.project.controllers.dto.MovieDTO;
 import com.company.project.controllers.dto.MovieMapper;
 import com.company.project.controllers.dto.MoviePlusDTO;
 import com.company.project.entity.Movie;
-import com.company.project.entity.User;
 import com.company.project.repository.MovieRepository;
-import com.company.project.services.UserService;
 
 import lombok.AllArgsConstructor;
 

@@ -8,14 +8,20 @@ services:
       - DATABASE_NAME=online_cinema
       - MYSQL_USERNAME=root
       - MYSQL_PASSWORD=testpass
+      - MONGODB_HOST=mongo
+      - MONGODB_PORT=27017
+      - MONGODB_USERNAME=root
+      - MONGODB_PASSWORD=rootpass
     networks:
       - react-spring
       - spring-mysql
     depends_on:
       db:
         condition: service_healthy
+      mongo:
+        condition: service_started
     ports:
-    - 8080:8080  
+      - 8080:8080
   db:
     image: mysql:latest
     container_name: db
@@ -33,9 +39,24 @@ services:
     volumes:
       - db-data:/var/lib/mysql
     networks:
-     - spring-mysql
+      - spring-mysql
     ports:
-     - 3306:3306
+      - 3306:3306
+  mongo:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - 27017:27017
+    expose:
+      - 27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootpass
+      MONGO_INITDB_DATABASE: online_cinema_mongo
+    volumes:
+      - mongodb:/data/mongodb
+    networks:
+      - spring-mysql
   frontend:
     build:
       context: frontend
@@ -54,6 +75,8 @@ services:
       - 33060
 volumes:
   db-data: {}
+  mongodb: {}
+
 networks:
   react-spring: {}
   spring-mysql: {}

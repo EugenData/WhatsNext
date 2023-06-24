@@ -2,10 +2,7 @@ package com.company.project.services;
 
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Random;
-import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -15,6 +12,7 @@ import com.company.project.entity.Movie;
 import com.company.project.entity.Review;
 import com.company.project.entity.User;
 import com.company.project.entity.Watchlist;
+import com.company.project.noSql.repository.MovieRepositoryNoSql;
 import com.company.project.repository.ActorRepository;
 import com.company.project.repository.AwardRepository;
 import com.company.project.repository.MovieRepository;
@@ -40,7 +38,7 @@ public class PopulateDatabase {
 
     public PopulateDatabase(UserRepository userRepository, MovieRepository movieRepository,
             WatchlistRepository watchlistRepository, ReviewRepository reviewRepository,
-            AwardRepository awardRepository, ActorRepository actorRepository) {
+            AwardRepository awardRepository, ActorRepository actorRepository, MovieRepositoryNoSql movieRepoForMov) {
 
         this.userRepository = userRepository;
         this.movieRepository = movieRepository;
@@ -192,29 +190,22 @@ public class PopulateDatabase {
         List<Movie> movies = movieRepository.findAll();
 
         for (Movie movie : movies) {
-            // Generate a random number of sequels for each movie
             int numSequels = faker.random().nextInt(1, 3);
 
             for (int i = 0; i < numSequels; i++) {
-                // Create a new Movie object for the sequel
                 Movie sequel = new Movie();
-                sequel.setTitle(faker.book().title()); // Generate a random title
-                sequel.setGenre(faker.book().genre()); // Generate a random genre
-                sequel.setReleaseDate(faker.random().nextInt(2000, 2011)); // Generate a random release date
+                sequel.setTitle(faker.book().title());
+                sequel.setGenre(faker.book().genre());
+                sequel.setReleaseDate(faker.random().nextInt(2000, 2011));
 
                 sequel.setParentMovie(movie);
-                // Add the sequel to the current movie's sequels list
                 movie.getSequels().add(sequel);
 
-                // Establish the bidirectional relationship between the original movie and its
-                // sequel
                 sequel.setParentMovie(movie);
 
-                // Save the sequel movie to the repository
                 movieRepository.save(sequel);
             }
 
-            // Save the original movie to the repository
             movieRepository.save(movie);
         }
     }

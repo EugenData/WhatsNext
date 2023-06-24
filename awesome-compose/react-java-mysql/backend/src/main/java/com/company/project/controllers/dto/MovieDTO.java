@@ -16,6 +16,4 @@ public class MovieDTO {
   private String genre;
   private int releaseDate;
 
-  
-
 }
